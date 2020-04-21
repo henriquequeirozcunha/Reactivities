@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './App.css';
-import { Header, Icon, List } from 'semantic-ui-react'
+import { Header, Icon, List } from 'semantic-ui-react';
+
+import axios from 'axios';
 
 function App() {
+
+  const [values, setValues] = useState([]);
+
+  useEffect(() => {
+
+    async function getValuesFromAPI() {
+
+      const response = await axios.get('http://localhost:5000/api/values');
+      setValues(response.data);
+      console.log(response.data);
+    };
+
+  }, []);
+
   return (
     <div className="App">
       <Header as='h2'>
