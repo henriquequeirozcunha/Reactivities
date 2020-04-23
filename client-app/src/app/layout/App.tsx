@@ -3,35 +3,40 @@ import React, { useEffect, useState } from 'react';
 import { Header, Icon, List } from 'semantic-ui-react';
 
 import axios from 'axios';
+import { IActivity } from '../models/Activity';
+import { Navbar } from '../../features/nav/NavBar';
+
+
+
 
 function App() {
 
-  const [values, setValues] = useState([]);
+  const [activities, setActivities] = useState<IActivity[]>([]);
 
   useEffect(() => {
 
     async function getValuesFromAPI() {
 
-      const response = await axios.get('http://localhost:5000/api/values');
-      setValues(response.data);
+      const response = await axios.get<IActivity[]>('http://localhost:5000/api/values');
       console.log(response.data);
+      setActivities(response.data);
+      
     };
+
+    getValuesFromAPI();
 
   }, []);
 
   return (
     <div className="App">
-      <Header as='h2'>
-        <Icon name='users' />
-        <Header.Content>
-          Reactivities
-        </Header.Content>
-      </Header>
+      <Navbar/>
 
       <List>
-        <List.Item>Apples</List.Item>
-        <List.Item>Pears</List.Item>
-        <List.Item>Oranges</List.Item>
+        {
+          activities.map(activity => 
+            <List.Item key={activity.id} >{activity.name}</List.Item>
+          )
+        }
       </List>
     </div>
   );
