@@ -1,20 +1,23 @@
 import React from "react";
-import { Menu } from "semantic-ui-react";
+import { Menu, Container, Button } from "semantic-ui-react";
+import './styles.css';
 
-export const Navbar = () => {
+interface IProps {
+  openCreateForm : () => void;
+}
+
+export const Navbar : React.FC<IProps> = ({openCreateForm}) => {
   return (
-    <div>
-      <Menu>
-        <Menu.Item
-          name="home"
-        />
-        <Menu.Item
-          name="messages"
-        />
-        <Menu.Item
-          name="friends"
-        />
-      </Menu>
-    </div>
+    <Menu fixed="top" inverted>
+      <Container>
+        <Menu.Item header name="home">
+          <img src="/assets/logo.png" alt="logo"/>
+        </Menu.Item>
+        <Menu.Item name="messages" />
+        <Menu.Item>
+          <Button onClick={() => openCreateForm()} positive content="Create Activity" />
+        </Menu.Item>
+      </Container>
+    </Menu>
   );
 };
