@@ -1,17 +1,19 @@
 import React, { useState, FormEvent, useContext, useEffect } from "react";
-import { Segment, Form, Button } from "semantic-ui-react";
+import { Segment, Form, Button, Grid } from "semantic-ui-react";
 import ActivityStore from "../../../app/stores/activityStore";
 
 import { v4 as uuid } from "uuid";
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
 
-
 interface DetailParams {
-  id : string
+  id: string;
 }
 
-const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
+const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
+  match,
+  history,
+}) => {
   const activityStore = useContext(ActivityStore);
 
   const {
@@ -20,10 +22,8 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
     submitting,
     activity: initialActivity,
     loadActivity,
-    clearActivity
+    clearActivity,
   } = activityStore;
-
-
 
   const [activity, setActivity] = useState({
     id: "",
@@ -37,18 +37,22 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
   });
 
   useEffect(() => {
-    if(match.params.id && activity.id.length === 0){
+    if (match.params.id && activity.id.length === 0) {
       loadActivity(match.params.id).then(() => {
         initialActivity && setActivity(initialActivity);
       });
     }
 
-
     return () => {
       clearActivity();
-    }
-
-  }, [loadActivity, clearActivity, match.params.id, initialActivity, activity.id.length]);
+    };
+  }, [
+    loadActivity,
+    clearActivity,
+    match.params.id,
+    initialActivity,
+    activity.id.length,
+  ]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -59,11 +63,11 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
       };
 
       createActivity(newActivity).then(() => {
-        history.push('/activities');
+        history.push("/activities");
       });
     } else {
       editActivity(activity).then(() => {
-        history.push('/activities');
+        history.push("/activities");
       });
     }
   };
@@ -77,62 +81,68 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match, histo
   };
 
   return (
-    <Segment clearing>
-      <Form onSubmit={handleSubmit}>
-        <Form.Input
-          onChange={handleInputChange}
-          placeholder="Title"
-          name="title"
-          value={activity?.title}
-        />
-        <Form.TextArea
-          onChange={handleInputChange}
-          rows={2}
-          placeholder="Description"
-          name="description"
-          value={activity?.description}
-        />
-        <Form.Input
-          onChange={handleInputChange}
-          placeholder="Category"
-          name="category"
-          value={activity?.category}
-        />
-        <Form.Input
-          onChange={handleInputChange}
-          type="datetime-local"
-          placeholder="Date"
-          name="date"
-          value={activity?.date}
-        />
-        <Form.Input
-          onChange={handleInputChange}
-          placeholder="City"
-          name="city"
-          value={activity?.city}
-        />
-        <Form.Input
-          placeholder="Venue"
-          name="venue"
-          onChange={handleInputChange}
-          value={activity?.venue}
-        />
+    <Grid>
+      <Grid.Column width={10}>
+        <Segment clearing>
+          <Form onSubmit={handleSubmit}>
+            <Form.Input
+              onChange={handleInputChange}
+              placeholder="Title"
+              name="title"
+              value={activity?.title}
+            />
+            <Form.TextArea
+              onChange={handleInputChange}
+              rows={2}
+              placeholder="Description"
+              name="description"
+              value={activity?.description}
+            />
+            <Form.Input
+              onChange={handleInputChange}
+              placeholder="Category"
+              name="category"
+              value={activity?.category}
+            />
+            <Form.Input
+              onChange={handleInputChange}
+              type="datetime-local"
+              placeholder="Date"
+              name="date"
+              value={activity?.date}
+            />
+            <Form.Input
+              onChange={handleInputChange}
+              placeholder="City"
+              name="city"
+              value={activity?.city}
+            />
+            <Form.Input
+              placeholder="Venue"
+              name="venue"
+              onChange={handleInputChange}
+              value={activity?.venue}
+            />
 
-        <Button
-          floated="right"
-          loading={submitting}
-          positive
-          type="submit"
-          content="Submit"
-        ></Button>
-        <Button
-          onClick={() => { history.push('/activities')}}
-          type='button'
-          floated="right"
-          content="Cancel"
-        ></Button>
-      </Form>
-    </Segment>
+            <Button
+              floated="right"
+              loading={submitting}
+              positive
+              type="submit"
+              content="Submit"
+            ></Button>
+            <Button
+              onClick={() => {
+                history.push("/activities");
+              }}
+              type="button"
+              floated="right"
+              content="Cancel"
+            ></Button>
+          </Form>
+        </Segment>
+      </Grid.Column>
+    </Grid>
   );
 };
 
