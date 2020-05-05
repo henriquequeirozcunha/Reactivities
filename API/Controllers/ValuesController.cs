@@ -17,7 +17,7 @@ namespace DatingApp.API.Controllers
 
         public ValuesController(DataContext context)
         {
-            this._context = context;
+            _context = context;
 
         }
 
