@@ -7,12 +7,17 @@ import "semantic-ui-css/semantic.min.css";
 import "mobx-react-lite/batchingForReactDom";
 import "mobx-react-lite/batchingOptOut";
 import 'react-toastify/dist/ReactToastify.min.css';
+import 'react-widgets/dist/css/react-widgets.css';
 
 import { Router } from "react-router-dom";
 import {createBrowserHistory} from 'history'
 import ScrollToTop from "./app/layout/ScrollToTop";
 
+import dateFnsLocalizer from 'react-widgets-date-fns';
+
 export const history = createBrowserHistory();
+
+dateFnsLocalizer()
 
 ReactDOM.render(
   // <React.StrictMode>
