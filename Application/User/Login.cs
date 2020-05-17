@@ -2,6 +2,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Errors;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -30,8 +31,10 @@ namespace Application.User
         public class Handler : IRequestHandler<Query, User>
         {
             private readonly UserManager<AppUser> _userManager;
-            public Handler(UserManager<AppUser> userManager)
+            private readonly IJwtGenerator _jwtGenerator;
+            public Handler(UserManager<AppUser> userManager, IJwtGenerator jwtGenerator)
             {
+                _jwtGenerator = jwtGenerator;
                 _userManager = userManager;
 
             }
@@ -40,15 +43,15 @@ namespace Application.User
             {
                 var user = await _userManager.FindByEmailAsync(request.Email);
 
-                if(user == null)
+                if (user == null)
                 {
                     throw new RestException(HttpStatusCode.Unauthorized);
                 }
 
-                return new User 
-                {   
+                return new User
+                {
                     DisplayName = user.DisplayName,
-                    Token = "This Will be Token",
+                    Token = _jwtGenerator.CreateToken(user),
                     UserName = user.UserName,
                     Image = null
 
