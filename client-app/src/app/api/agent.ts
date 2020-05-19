@@ -2,9 +2,20 @@ import axios, { AxiosResponse } from 'axios';
 import { IActivity } from '../models/Activity';
 import { history } from '../..';
 import { toast } from 'react-toastify';
+import { IUser, IUserFormValues } from '../models/User';
 
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
+
+axios.interceptors.request.use((config) => {
+    const token = window.localStorage.getItem('jwt');
+    if(token) config.headers.Authorization = `Bearer ${token}`;
+
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+} 
+);
 
 axios.interceptors.response.use(undefined, error => {
 
@@ -50,4 +61,10 @@ const Activities = {
     delete: (id : string) => requests.del(`/activities/${id}`)
 }
 
-export default  { Activities }
+const User = {
+    current: () : Promise<IUser> => requests.get('/user'),
+    login: (user : IUserFormValues) : Promise<IUser> => requests.post('/user/login', user),
+    register: (user : IUserFormValues) : Promise<IUser> => requests.post('/user/register', user),
+}
+
+export default  { Activities, User }
