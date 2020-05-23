@@ -7,6 +7,9 @@ export interface IActivity {
   date?: Date | null;
   city: string;
   venue: string;
+  attendees : IAttendee[]
+  isGoing : Boolean;
+  isHost : Boolean;
 }
 
 export interface IActivityFormValues extends Partial<IActivity> {
@@ -29,4 +32,13 @@ export class ActivityFormValues implements IActivityFormValues {
       }
       Object.assign(this, init);
   }
+}
+
+
+export interface IAttendee {
+  username: string;
+  displayname: string;
+  image: string;
+  isHost : Boolean;
+
 }

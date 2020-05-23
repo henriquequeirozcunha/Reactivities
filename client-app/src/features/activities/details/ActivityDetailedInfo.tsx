@@ -2,6 +2,7 @@ import React from "react";
 import { Segment, Grid, Icon } from "semantic-ui-react";
 import { IActivity } from "../../../app/models/Activity";
 import { format } from "date-fns";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
     activity : IActivity | null;
@@ -47,4 +48,4 @@ const ActivityDetailedInfo : React.FC<IProps> = ({activity}) => {
   );
 };
 
-export default ActivityDetailedInfo;
+export default observer(ActivityDetailedInfo);
