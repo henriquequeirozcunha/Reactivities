@@ -33,7 +33,7 @@ namespace Application.Profiles
                 return new Profile 
                 {
                     DisplayName = user.DisplayName,
-                    UserName = user.UserName,
+                    Username = user.UserName,
                     Image = user.Photos.SingleOrDefault(x => x.IsMain)?.Url,
                     Photos = user.Photos,
                     Bio = user.Bio

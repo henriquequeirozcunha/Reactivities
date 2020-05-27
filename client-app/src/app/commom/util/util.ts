@@ -30,7 +30,7 @@ export const setActivityProps = (activity: IActivity, user: IUser) => {
 
 export const createAttendee = (user : IUser) : IAttendee => {
     return {
-      displayname: user.displayName,
+      displayName: user.displayName,
       isHost : false,
       username : user.userName,
       image : user.image!
