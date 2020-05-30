@@ -4,8 +4,9 @@ import "./styles.css";
 
 import { NavLink, Link } from "react-router-dom";
 import { RootStoreContext } from "../../app/stores/rootStore";
+import { observer } from "mobx-react-lite";
 
-export const Navbar: React.FC = () => {
+const Navbar = () => {
   const rootStore = useContext(RootStoreContext);
 
   const { user, logout } = rootStore.userStore;
@@ -45,3 +46,6 @@ export const Navbar: React.FC = () => {
     </Menu>
   );
 };
+
+
+export default observer(Navbar);

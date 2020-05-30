@@ -3,7 +3,7 @@ import React, { Fragment, useContext, useEffect } from "react";
 import { Container } from "semantic-ui-react";
 import "./styles.css";
 
-import { Navbar } from "../../features/nav/NavBar";
+
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 
 import { observer } from "mobx-react-lite";
@@ -22,6 +22,7 @@ import { RootStoreContext } from "../stores/rootStore";
 import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../commom/modals/ModalContainer";
 import ProfilePage from "../../features/profiles/ProfilePage";
+import NavBar from "../../features/nav/NavBar";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
 
@@ -52,7 +53,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
         path="/(.+)"
         render={() => (
           <Fragment>
-            <Navbar />
+            <NavBar />
             <Container className="container-list">
               <Switch>
                 <Route path="/activities" exact component={ActivityDashboard} />

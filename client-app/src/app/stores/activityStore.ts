@@ -6,6 +6,7 @@ import { history } from "../../index";
 import { RootStore } from "./rootStore";
 import { setActivityProps, createAttendee } from "../commom/util/util";
 import { toast } from "react-toastify";
+import {HubConnection, HubConnectionBuilder, LogLevel} from '@microsoft/signalr';
 
 export default class ActivityStore {
   rootStore: RootStore;
@@ -23,11 +24,69 @@ export default class ActivityStore {
 
   @observable loading: boolean = false;
 
+  @observable.ref hubConneciton : HubConnection  | null = null;
+
+  
+
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(
       Array.from(this.activityRegistry.values())
     );
   }
+
+@action createHubConnection = (activityId : string) => {
+
+  
+  this.hubConneciton = new HubConnectionBuilder()
+  .withUrl('http://localhost:5000/chat', {
+    accessTokenFactory : () => this.rootStore.commomStore.token!
+  })
+  .configureLogging(LogLevel.Information)
+  .build();
+
+  this.hubConneciton.start()
+  .then(() => {
+    console.log(this.hubConneciton!.state)
+  })
+  .then(() => {
+     console.log('Tentando conectar com o ChatHub(SignalR)....');
+     this.hubConneciton?.invoke('AddToGroup', activityId);
+  })
+  .catch((error) => {
+    console.log('Erro ao abrir conexão SignalR: ', error);
+  })
+
+  this.hubConneciton.on('ReceiveComment', (comment) => {
+    runInAction(() => {
+      this.activity!.comments.push(comment);
+
+    })
+  })
+
+ this.hubConneciton.on('Send', message => {
+   toast.info(message);
+ })
+}
+
+@action stopHubConnection = () => {
+  this.hubConneciton?.invoke('RemoveFromGroup', this.activity?.id)
+      .then(() => {
+        this.hubConneciton?.stop();
+      })
+      .then(() => console.log('Connection has stopped'))
+      .catch(err => console.log(err));
+      
+}
+
+@action addComment = async (values : any) => {
+    values.activityId = this.activity?.id;
+    try {
+      await this.hubConneciton!.invoke('SendComment', values)
+      
+    } catch (error) {
+       console.log(error);
+    }
+}
 
   groupActivitiesByDate(activities: IActivity[]) {
     const sortedActivities = activities.sort(
@@ -115,6 +174,7 @@ export default class ActivityStore {
       attendeees.push(attendee);
       activity.attendees = attendeees;
       activity.isHost = true;
+      activity.comments = [];
 
       runInAction("Creating Activity", () => {
         this.activityRegistry.set(activity.id, activity);
