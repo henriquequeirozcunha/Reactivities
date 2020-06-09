@@ -63,6 +63,7 @@ const ActivityDetailedChat : React.FC<IProps> = ({activity}) => {
                 </Comment.Content>
               </Comment>
             ))}
+            
 
           <FinalForm
             onSubmit={addComment}

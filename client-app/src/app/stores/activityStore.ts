@@ -50,6 +50,8 @@ export default class ActivityStore {
   })
   .then(() => {
      console.log('Tentando conectar com o ChatHub(SignalR)....');
+
+     if(this.hubConneciton?.state)
      this.hubConneciton?.invoke('AddToGroup', activityId);
   })
   .catch((error) => {
