@@ -59,7 +59,8 @@ export default class ActivityStore {
     return params;
   }
 
-  
+
+
   @computed get totalPages(){
     return Math.ceil(this.activityCount / LIMIT);
   }
@@ -85,9 +86,9 @@ export default class ActivityStore {
 
 @action createHubConnection = (activityId : string) => {
 
-  
+  console.log(process.env.REACT_APP_API_CHAT_URL!);
   this.hubConneciton = new HubConnectionBuilder()
-  .withUrl(process.env.REACT_APP_API_URL!, {
+  .withUrl(process.env.REACT_APP_API_CHAT_URL!, {
     accessTokenFactory : () => this.rootStore.commomStore.token!
   })
   .configureLogging(LogLevel.Information)
