@@ -11,10 +11,10 @@ namespace Persistence.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(maxLength: 255,nullable: false),
                     Body = table.Column<string>(nullable: true),
-                    AuthorId = table.Column<string>(nullable: true),
-                    ActivityId = table.Column<Guid>(nullable: true),
+                    AuthorId = table.Column<string>(maxLength: 255,nullable: true),
+                    ActivityId = table.Column<Guid>(maxLength: 255,nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -42,7 +42,7 @@ namespace Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",
                 table: "Comments",
-                column: "UserId");
+                column: "AuthorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -23,6 +23,7 @@ import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../commom/modals/ModalContainer";
 import ProfilePage from "../../features/profiles/ProfilePage";
 import NavBar from "../../features/nav/NavBar";
+import PrivateRoute from "./PrivateRoute";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
 
@@ -56,19 +57,19 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
             <NavBar />
             <Container className="container-list">
               <Switch>
-                <Route path="/activities" exact component={ActivityDashboard} />
-                <Route
+                <PrivateRoute path="/activities" exact component={ActivityDashboard} />
+                <PrivateRoute
                   path="/activities/:id"
                   exact
                   component={ActivityDetails}
                 />
-                <Route
+                <PrivateRoute
                   key={location.key}
                   path={["/createActivity", "/manage/:id"]}
                   exact
                   component={ActivityForm}
                 />
-                <Route path='/profile/:username' component={ProfilePage} />
+                <PrivateRoute path='/profile/:username' component={ProfilePage} />
                 
                 <Route component={NotFound} />
               </Switch>

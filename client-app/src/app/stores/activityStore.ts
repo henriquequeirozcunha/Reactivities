@@ -1,4 +1,4 @@
-import { observable, action, computed, runInAction, reaction } from "mobx";
+import { observable, action, computed, runInAction, reaction, toJS } from "mobx";
 import { SyntheticEvent } from "react";
 import { IActivity } from "../models/Activity";
 import agent from "../api/agent";
@@ -87,7 +87,7 @@ export default class ActivityStore {
 
   
   this.hubConneciton = new HubConnectionBuilder()
-  .withUrl('http://localhost:5000/chat', {
+  .withUrl(process.env.REACT_APP_API_URL!, {
     accessTokenFactory : () => this.rootStore.commomStore.token!
   })
   .configureLogging(LogLevel.Information)
@@ -166,7 +166,7 @@ export default class ActivityStore {
 
     if (activity) {
       this.activity = activity;
-      return this.activity;
+      return toJS(this.activity);
     } else {
       this.loadingInitial = true;
       try {
